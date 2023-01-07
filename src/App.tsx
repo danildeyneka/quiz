@@ -1,10 +1,12 @@
 import { FC, useState } from 'react';
 import { Settings } from './components/Settings';
 import { Quiz } from './components/Quiz';
+import { IQuiz } from './@types/services.type';
+import {AxiosResponse} from 'axios';
 
 export const App: FC = () => {
-  const [start, setStart] = useState(false)
+  const [quizData, setQuizData] = useState<IQuiz[]>([])
 
-  if (!start) return <Settings/>
-  return <Quiz/>
+  if (quizData?.length === 0) return <Settings setQuizData={setQuizData}/>
+  return <Quiz quizData={quizData}/>
 }

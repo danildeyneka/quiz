@@ -2,21 +2,23 @@ import React, { FC, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { answerTypes, categories, difficulties } from '../assets/data';
 import { optionsCreator } from '../utils/optionsCreator';
+import { IQuiz } from '../@types/services.type';
+import { quizApi } from '../services/quiz.api';
 
-export const Settings: FC = () => {
+export const Settings: FC<{ setQuizData: (arg: IQuiz[]) => void }> = ({ setQuizData }) => {
   const [amount, setAmount] = useState('10')
   const [category, setCategory] = useState('any')
   const [difficulty, setDifficulty] = useState('any')
   const [answerType, setAnswerType] = useState('any')
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-
+    const data = await quizApi.getData(amount, category, difficulty, answerType)
+    setQuizData(data)
   }
-
   return <Form>
 
-    <input value={ amount } onChange={ e => setAmount(e.target.value + '') } type="number" max={ 50 }/>
+    <input value={ amount } onChange={ e => setAmount(e.target.value + '') } type="number" max={ 50 } min={ 1 }/>
 
     <select value={ category } onChange={ e => setCategory(e.target.value) }>
       { optionsCreator(categories) }

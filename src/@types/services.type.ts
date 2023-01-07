@@ -1,4 +1,4 @@
-export interface IResult {
+export interface IQuiz {
   category: string;
   type: 'boolean' | 'multiple'
   difficulty: 'easy' | 'medium' | 'hard'
@@ -7,7 +7,11 @@ export interface IResult {
   incorrect_answers: string[];
 }
 
-interface IResponse {
+export interface IDataResponse {
   response_code: number;
-  results: IResult
+  results: IQuiz[]
+}
+
+export interface IError {
+  quizData: 'ERR_NETWORK'
 }
