@@ -11,7 +11,3 @@ export interface IDataResponse {
   response_code: number;
   results: IQuiz[]
 }
-
-export interface IError {
-  quizData: 'ERR_NETWORK'
-}

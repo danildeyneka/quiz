@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { Button, Form, InputGroup } from 'react-bootstrap';
 import { answerTypes, categories, difficulties } from '../assets/data';
 import { optionsCreator } from '../utils/optionsCreator';
 import { IQuiz } from '../@types/services.type';
@@ -10,28 +10,56 @@ export const Settings: FC<{ setQuizData: (arg: IQuiz[]) => void }> = ({ setQuizD
   const [category, setCategory] = useState('any')
   const [difficulty, setDifficulty] = useState('any')
   const [answerType, setAnswerType] = useState('any')
+  const [loading, setLoading] = useState(false)
+  const [amountError, setAmountError] = useState(false)
+
+  const handleSetAmount = (num: string) => {
+    if (+num > 0 && +num < 51) {
+      setAmountError(false)
+      setAmount(num)
+    } else setAmountError(true)
+  }
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
+    setLoading(true)
     const data = await quizApi.getData(amount, category, difficulty, answerType)
+    setLoading(false)
     setQuizData(data)
   }
-  return <Form>
+  return <Form className="w-25 m-auto text-center">
+    <h1 className="mb-4 fw-bold">Quiz game</h1>
+    <InputGroup>
+      <Form.Group className="rounded-4 mb-2 w-100">Enter number of questions</Form.Group>
+      <Form.Control className="rounded-2" aria-label="number of questions" placeholder={ amount } value={ amount }
+                    type="number" onChange={ e => handleSetAmount(e.target.value) }/>
+    </InputGroup>
+    { amountError && <p className="text-warning w-75 m-auto mt-1">Please enter a number from 1 to 50</p> }
 
-    <input value={ amount } onChange={ e => setAmount(e.target.value + '') } type="number" max={ 50 } min={ 1 }/>
+    <Form.Group>
+      <Form.Label className="mt-2">Select category</Form.Label>
+      <Form.Select value={ category } aria-label="category" onChange={ e => setCategory(e.target.value) }>
+        { optionsCreator(categories) }
+      </Form.Select>
+    </Form.Group>
 
-    <select value={ category } onChange={ e => setCategory(e.target.value) }>
-      { optionsCreator(categories) }
-    </select>
+    <Form.Group>
+      <Form.Label className="mt-2">Select difficulty</Form.Label>
+      <Form.Select value={ difficulty } aria-label="difficulty" onChange={ e => setDifficulty(e.target.value) }>
+        { optionsCreator(difficulties) }
+      </Form.Select>
+    </Form.Group>
 
-    <select value={ difficulty } onChange={ e => setDifficulty(e.target.value) }>
-      { optionsCreator(difficulties) }
-    </select>
+    <Form.Group>
+      <Form.Label className="mt-2">Select questions type</Form.Label>
+      <Form.Select value={ answerType } aria-label="questions type" onChange={ e => setAnswerType(e.target.value) }>
+        { optionsCreator(answerTypes) }
+      </Form.Select>
+    </Form.Group>
 
-    <select value={ answerType } onChange={ e => setAnswerType(e.target.value) }>
-      { optionsCreator(answerTypes) }
-    </select>
+    <Button className="fs-4 rounded-4 bg-info mt-3 border-info px-5" type="submit"
+            onClick={ (e) => handleSubmit(e) }>Start</Button>
 
-    <button type="submit" onClick={ (e) => handleSubmit(e) }>send</button>
+    { loading && <div className='text-warning'>Loading...</div> }
   </Form>
 }

@@ -1,2 +1,9 @@
 @import 'reset-css';
 @import 'bootstrap/dist/css/bootstrap.min.css';
+
+body {
+    background: linear-gradient(180deg, var(--bs-cyan) 35%, var(--bs-blue) 100%) fixed;
+    font-family: "Calibri", serif;
+    color: #fff;
+    font-size: 1.3rem;
+}

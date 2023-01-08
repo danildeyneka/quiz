@@ -4,5 +4,7 @@ import './index.css'
 import { App } from './App';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <App/>,
+  <main className='m-auto w-50 py-5 shadow mt-5'>
+    <App/>
+  </main>
 )
