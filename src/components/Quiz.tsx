@@ -17,6 +17,9 @@ export const Quiz: FC<{ quizData: IQuiz[], setQuizData: (arg: IQuiz[]) => void }
     setCount(0)
     setCorrectAnswersCount(0)
   }
+  const progressBarStyle = {
+    width: count / answersCount * 100 + '%'
+  }
 
   if (count === answersCount) return <div className="mx-auto w-50 d-flex justify-content-between">
     <Button onClick={ () => restart() }>try again</Button>
@@ -24,6 +27,7 @@ export const Quiz: FC<{ quizData: IQuiz[], setQuizData: (arg: IQuiz[]) => void }
     <Button onClick={ () => setQuizData([]) }>another test</Button></div>
 
   return <div className="w-50 m-auto">
+    <div className='progress-bar' style={progressBarStyle}></div>
     <h1 className="text-center mb-4 d-block">{ HTMLReactParser(quizData[count].category) }</h1>
     <p className="text-center" style={ { minHeight: 60 } }>{ HTMLReactParser(quizData[count].question) }</p>
     <Container className="mx-5 mt-4">

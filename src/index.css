@@ -7,3 +7,10 @@ body {
     color: #fff;
     font-size: 1.3rem;
 }
+
+.progress-bar {
+    height: 2px;
+    background-color: var(--bs-blue);
+    border-radius: 50%;
+    margin-bottom: 8px;
+}
